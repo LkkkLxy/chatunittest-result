@@ -1,9 +1,12 @@
 package com.mirna.hospitalmanagementapi.application.controllers;
 
-import com.mirna.hospitalmanagementapi.domain.dtos.patient.PatientUpdatedDataDTO;
 import com.mirna.hospitalmanagementapi.domain.entities.Patient;
 import com.mirna.hospitalmanagementapi.domain.services.PatientService;
 import org.springframework.http.ResponseEntity;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,14 +24,11 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.mirna.hospitalmanagementapi.domain.dtos.patient.PatientDTO;
 import com.mirna.hospitalmanagementapi.domain.dtos.patient.PatientPublicDataDTO;
+import com.mirna.hospitalmanagementapi.domain.dtos.patient.PatientUpdatedDataDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import org.mockito.*;
-import org.junit.jupiter.api.*;
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-class PatientController_putPatient_3_0_Test {
+class PatientController_deletePatient_4_0_Test {
 
     @Mock
     private PatientService patientService;
@@ -42,15 +42,12 @@ class PatientController_putPatient_3_0_Test {
     }
 
     @Test
-    void testPutPatient() {
-        // Arrange
-        PatientUpdatedDataDTO patientUpdatedDataDTO = new PatientUpdatedDataDTO(1L, "John", "Doe", null);
+    void testDeletePatient() throws Exception {
+        Long patientId = 1L;
         Patient patient = new Patient();
-        when(patientService.updatePatient(patientUpdatedDataDTO)).thenReturn(patient);
-        // Act
-        ResponseEntity<Object> responseEntity = patientController.putPatient(patientUpdatedDataDTO);
-        // Assert
-        assertEquals(ResponseEntity.ok(patient), responseEntity);
-        verify(patientService, times(1)).updatePatient(patientUpdatedDataDTO);
+        when(patientService.deactivatePatient(patientId)).thenReturn(patient);
+        ResponseEntity<Object> response = patientController.deletePatient(patientId);
+        assertEquals(ResponseEntity.ok(patient), response);
+        verify(patientService, times(1)).deactivatePatient(patientId);
     }
 }
